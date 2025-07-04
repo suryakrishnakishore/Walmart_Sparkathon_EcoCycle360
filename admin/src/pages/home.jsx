@@ -2,7 +2,7 @@ import React from 'react'
 
 function Home() {
   return (
-    <div className='min-h-screen flex justify-around align-middle'>
+    <div className='flex justify-center min-h-screen items-center'>
         Greetings, Administrator
     </div>
   )

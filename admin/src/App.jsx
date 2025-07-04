@@ -7,6 +7,9 @@ import { setAuthToken } from './libs/apiCalls.js';
 import { Toaster } from "sonner";
 import Navbar from './components/navbar.jsx';
 import Home from './pages/home.jsx';
+import Customers from './pages/customers.jsx';
+import Orders from './pages/orders.jsx';
+import RecycleOrders from './pages/recycle-orders.jsx';
 
 const RootLayout = () => {
 
@@ -15,12 +18,12 @@ const RootLayout = () => {
   setAuthToken(user?.token || "");
 
   return (user ? (
-    <>
+    <div className='flex'>
       { <Navbar /> }
-      <div className='min-h-[cal(h-screen - 100px)]'>
+      <div className='w-full min-h-screen'>
         <Outlet />
       </div>
-    </>
+    </div>
     
   ) : (
     <Navigate to="/sign-in" replace={true} />
@@ -35,9 +38,11 @@ function App() {
           <Route element={<RootLayout/>}>
             <Route path='/' element={<Navigate to={"/home"} />}></Route>
             <Route path='/home' element={<Home />} />
+            <Route path='/customers' element={<Customers />}></Route>
+            <Route path='/orders' element={<Orders />}></Route>
+            <Route path='/recycle-orders' element={<RecycleOrders />}></Route>
           </Route> 
           <Route path='/sign-in' element={<SignIn/>}></Route>
-          <Route path='/sign-up' element={<SignUp/>}></Route>
         </Routes>
       </div>
 
