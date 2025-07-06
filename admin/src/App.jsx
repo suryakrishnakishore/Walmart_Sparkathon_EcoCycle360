@@ -10,6 +10,7 @@ import Home from './pages/home.jsx';
 import Customers from './pages/customers.jsx';
 import Orders from './pages/orders.jsx';
 import RecycleOrders from './pages/recycle-orders.jsx';
+import InMall from './pages/in-mall.jsx';
 
 const RootLayout = () => {
 
@@ -41,6 +42,7 @@ function App() {
             <Route path='/customers' element={<Customers />}></Route>
             <Route path='/orders' element={<Orders />}></Route>
             <Route path='/recycle-orders' element={<RecycleOrders />}></Route>
+            <Route path='/in-mall' element={<InMall />}></Route>
           </Route> 
           <Route path='/sign-in' element={<SignIn/>}></Route>
         </Routes>

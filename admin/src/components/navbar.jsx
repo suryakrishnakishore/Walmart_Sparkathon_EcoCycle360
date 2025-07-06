@@ -16,7 +16,7 @@ function Navbar() {
   }
 
   return (
-    <section className="group bg-blue-500 min-h-screen w-[70px] hover:w-[20%] transition-all duration-300 px-3 flex flex-col py-6 overflow-x-hidden">
+    <section className="group bg-blue-500 min-h-screen w-[70px] hover:w-[17%] transition-all duration-300 px-3 flex flex-col py-6 overflow-x-hidden">
       <div className="flex items-center mb-10">
         <FaRecycle className={`text-3xl text-white ml-2 min-w-[32px] group-hover:ml-0`}
           style={{ animation: "spin 2s linear infinite" }}
@@ -49,7 +49,7 @@ function Navbar() {
             Customers
           </span>
         </Link>
-        <Link to={"/in-mall-submit"} className="flex items-center text-white hover:bg-green-600 rounded px-3 py-2 transition">
+        <Link to={"/in-mall"} className="flex items-center text-white hover:bg-green-600 rounded px-3 py-2 transition">
           <FaClipboardList className="text-2xl mr-1 min-w-[24px]" />
           <span className="whitespace-nowrap overflow-hidden transition-all duration-300
             opacity-0 group-hover:opacity-100 group-hover:ml-2">
@@ -67,7 +67,7 @@ function Navbar() {
             Sign Out
           </button>
         }
-        <FaUserShield className="text-2xl text-white mr-1 min-w-[24px]" />
+        <FaUserShield className="text-2xl ml-2 text-white mr-1 min-w-[24px]" />
         <div className="overflow-hidden">
           <div className="text-white font-semibold whitespace-nowrap transition-all duration-300
             opacity-0 group-hover:opacity-100 group-hover:ml-2">

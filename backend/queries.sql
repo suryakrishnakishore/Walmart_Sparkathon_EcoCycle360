@@ -60,3 +60,4 @@ CREATE TABLE customer_ecocycle (
     co2_saved DECIMAL(6, 2)
 );
 
+CREATE EXTENSION pg_trgm;
