@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import useStore from '../store'
 import { useState } from 'react';
 
-function Navbar() {
+function Navbar({ navOpen, setNavOpen }) {
   const { user, signOut } = useStore((state) => state);
   const [click, setClick] = useState(false);
 
@@ -16,7 +16,10 @@ function Navbar() {
   }
 
   return (
-    <section className="group bg-blue-500 min-h-screen w-[70px] hover:w-[17%] transition-all duration-300 px-3 flex flex-col py-6 overflow-x-hidden">
+    <section className="group fixed top-0 left-0 bg-blue-500 h-screen w-[70px] hover:w-[200px] transition-all duration-300 px-3 flex flex-col py-6 overflow-x-hidden"
+              onMouseEnter={() => setNavOpen(true)}
+              onMouseLeave={() => setNavOpen(false)}
+    >
       <div className="flex items-center mb-10">
         <FaRecycle className={`text-3xl text-white ml-2 min-w-[32px] group-hover:ml-0`}
           style={{ animation: "spin 2s linear infinite" }}

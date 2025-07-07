@@ -18,10 +18,17 @@ const RootLayout = () => {
   console.log(user);
   setAuthToken(user?.token || "");
 
+  const [ navOpen, setNavOpen ] = useState(false);
+
   return (user ? (
     <div className='flex'>
-      { <Navbar /> }
-      <div className='w-full min-h-screen'>
+        { <Navbar navOpen={navOpen} setNavOpen={setNavOpen} /> }
+      
+      <div 
+        className={`w-full min-h-screen transition-all duration-300 ${
+          navOpen ? "ml-[200px]" : "ml-[70px]"
+        }`}
+      >
         <Outlet />
       </div>
     </div>

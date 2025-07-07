@@ -15,4 +15,4 @@ export function setAuthToken(token) {
     }
 }
 
-export default api
+export default api;
