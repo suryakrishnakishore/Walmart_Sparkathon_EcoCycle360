@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { customers, orders, recyclableItems } from '../data';
 import '../styles/styles.css';
+import api from '../libs/apiCalls';
+import { formatCurrency, formatDate, getDate, handleRecycle } from '../libs';
 
 export default function CustomerDetail() {
   const { id } = useParams();
@@ -22,79 +24,60 @@ export default function CustomerDetail() {
   const [customerOrders, setCustomerOrders] = useState([]);
   const [customerRecyclables, setCustomerRecyclables] = useState([]);
 
-  // Fetch data from dummy source
-  useEffect(() => {
-    // Load customer data
+  async function getCustomer () {
     try {
-      const foundCustomer = customers.find(c => c.id === id);
-      if (foundCustomer) {
-        setCustomer(foundCustomer);
-        setError(prev => ({...prev, customer: null}));
-      } else {
-        throw new Error('Customer not found');
+      const { status, data: res } = await api.get(`/user/${id}`);
+      if(status === 200) {
+        setCustomer(res?.user || {});
       }
     } catch (err) {
+      console.log(err);
       setError(prev => ({...prev, customer: err.message}));
-    } finally {
+      setCustomer({});
+    }
+    finally {
       setLoading(prev => ({...prev, customer: false}));
     }
+  }
 
-    // Load orders
+  async function getOrder () {
     try {
-      const foundOrders = orders.filter(o => o.customerId === id);
-      setCustomerOrders(foundOrders);
-      setError(prev => ({...prev, orders: null}));
+      const { status, data: result} = await api.get(`/orders/${id}`);
+      if(status === 200) {
+        setCustomerOrders(result.orders);
+      }
     } catch (err) {
+      console.log(err);
       setError(prev => ({...prev, orders: err.message}));
     } finally {
-      setLoading(prev => ({...prev, orders: false}));
+      setLoading(prev=>({...prev, orders: false}));
     }
+  }
 
-    // Load recyclable items
-    loadRecyclables();
-  }, [id]);
-
-  const loadRecyclables = () => {
-    setLoading(prev => ({...prev, recyclables: true}));
-    setError(prev => ({...prev, recyclables: null}));
-    
+  async function getRecyclables() {
     try {
-      const foundRecyclables = recyclableItems.filter(r => r.customerId === id);
-      setCustomerRecyclables(foundRecyclables);
+      const { status, data: response }= await api.get(`/recyclables/${id}`);
+      if(status === 200) {
+        setCustomerRecyclables(response.recycles);
+      }
     } catch (err) {
+      console.log(err);
       setError(prev => ({...prev, recyclables: err.message}));
     } finally {
       setLoading(prev => ({...prev, recyclables: false}));
     }
-  };
+  }
+  
+  useEffect(() => {
+    getCustomer();
+    getOrder();
+    getRecyclables();
+  }, []);
 
-  // Helper functions
-  const calculateAge = (dob) => {
-    if (!dob) return 'N/A';
-    const birthDate = new Date(dob);
-    const diff = Date.now() - birthDate.getTime();
-    const ageDate = new Date(diff);
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString();
-  };
-
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(amount || 0);
-  };
-
-  const handleRecycle = (itemId) => {
-    console.log(`Processing recycling for item ${itemId}`);
-    // In a real app, this would call an API endpoint
-    alert(`Recycling process started for item ${itemId}`);
-  };
-
+  console.log(customerOrders);
+  console.log(customerRecyclables);
+  
+  
   if (loading.customer) {
     return <div className="container loading-spinner">Loading customer data...</div>;
   }
@@ -131,7 +114,7 @@ export default function CustomerDetail() {
             alt={customer.name}
             className="customer-photo"
           />
-          {customer.isPremium && (
+          {customer.id&1 && (
             <div className="premium-badge">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="gold" stroke="gold">
                 <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/>
@@ -147,17 +130,15 @@ export default function CustomerDetail() {
         </h1>
 
         <div className="customer-meta">
-          <span className={`customer-status ${customer.status}`}>
-            {customer.status}
+          <span className={`customer-status active`}>
+            {customer.status || "active"}
           </span>
           <span className="member-since">
-            Member since: {formatDate(customer.joinDate)}
+            Member since: {formatDate(customer.dob)}
           </span>
         </div>
 
-        {/* Customer Details Sections */}
         <div className="details-sections">
-          {/* Personal Information */}
           <div className="details-section">
             <h3>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -168,21 +149,16 @@ export default function CustomerDetail() {
             </h3>
             <div className="detail-grid">
               <div className="detail-item">
-                <span className="detail-label">Gender</span>
+                <span className="detail-label">Gender: </span>
                 <span className="detail-value">{customer.gender || 'Not specified'}</span>
               </div>
               <div className="detail-item">
-                <span className="detail-label">Date of Birth</span>
-                <span className="detail-value">{formatDate(customer.dob)}</span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Age</span>
-                <span className="detail-value">{calculateAge(customer.dob)}</span>
+                <span className="detail-label">Age: </span>
+                <span className="detail-value">{getDate(customer.dob)}</span>
               </div>
             </div>
           </div>
 
-          {/* Contact Information */}
           <div className="details-section">
             <h3>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -192,27 +168,22 @@ export default function CustomerDetail() {
             </h3>
             <div className="detail-grid">
               <div className="detail-item">
-                <span className="detail-label">Email</span>
+                <span className="detail-label">Email: </span>
                 <span className="detail-value">
                   <a href={`mailto:${customer.email}`}>{customer.email}</a>
                 </span>
               </div>
               <div className="detail-item">
-                <span className="detail-label">Phone</span>
+                <span className="detail-label">Phone: </span>
                 <span className="detail-value">
-                  <a href={`tel:${customer.phone}`}>{customer.phone}</a>
+                  <a href={`tel:${customer.phone}`}>{customer.phone || "91-xxx95-xx58"}</a>
                 </span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Address</span>
-                <span className="detail-value">{customer.address}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Orders Section */}
       <div className="section-card">
         <h3 className="section-title">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -239,15 +210,15 @@ export default function CustomerDetail() {
               <span>Items</span>
             </div>
             {customerOrders.map(order => (
-              <div className="order-row" key={order.id}>
-                <span className="order-id">#{order.id}</span>
-                <span className="order-date">{formatDate(order.date)}</span>
+              <div className="order-row" key={order.order_id}>
+                <span className="order-id">#{order.order_id}</span>
+                <span className="order-date">{formatDate(order.ordered_at)}</span>
                 <span className="order-amount">{formatCurrency(order.amount)}</span>
-                <span className={`order-status status-${order.status}`}>
-                  {order.status}
+                <span className={`order-status status-processing`}>
+                  {order.status || "processing"}
                 </span>
                 <span className="order-items">
-                  {order.items.reduce((total, item) => total + item.quantity, 0)} items
+                  {order.product_ids.length} items
                 </span>
               </div>
             ))}
@@ -264,70 +235,42 @@ export default function CustomerDetail() {
         )}
       </div>
 
-      {/* Recyclable Items Section */}
-      <div className="section-card">
-        <h3 className="section-title">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v3M4 7h16"/>
-          </svg>
-          Recyclable Items
-          {loading.recyclables && <span className="loading-badge">Loading...</span>}
-        </h3>
-        
-        {error.recyclables ? (
-          <div className="error-message">
-            {error.recyclables}
-            <button onClick={loadRecyclables}>Retry</button>
-          </div>
-        ) : customerRecyclables.length > 0 ? (
-          <div className="recyclables-grid">
-            {customerRecyclables.map(item => (
-              <div className="recyclable-item" key={item.id}>
-                <div className="recyclable-image">
-                  <img src={item.image} alt={item.name} />
-                </div>
-                <div className="recyclable-details">
-                  <h4>{item.name}</h4>
-                  <div className="recyclable-meta">
-                    <div className="meta-item">
-                      <span className="meta-label">Material:</span>
-                      <span className="meta-value">{item.material}</span>
-                    </div>
-                    <div className="meta-item">
-                      <span className="meta-label">Status:</span>
-                      <span className={`meta-value status-${item.status}`}>
-                        {item.status}
-                      </span>
-                    </div>
-                    <div className="meta-item">
-                      <span className="meta-label">Return Date:</span>
-                      <span className="meta-value">{formatDate(item.returnDate)}</span>
-                    </div>
-                  </div>
-                  <div className="recyclable-actions">
-                    <button 
-                      className="recycle-btn"
-                      onClick={() => handleRecycle(item.id)}
-                      disabled={item.status !== 'pending'}
-                    >
-                      {item.status === 'processed' ? 'Recycled' : 'Process Recycling'}
-                    </button>
-                    <span className="recycle-points">
-                      +{item.pointsAwarded} eco-points
-                    </span>
-                  </div>
-                </div>
+      
+      <div className='section-card'>
+        <h2 className="text-2xl font-semibold mb-6">Recyclable Items</h2>
+
+      {loading.recyclables ? (
+        <p className="text-gray-500">Loading...</p>
+      ) : error.recyclables ? (
+        <div className="text-red-600">{error.recyclables}</div>
+      ) : customerRecyclables.length === 0 ? (
+        <p className="text-gray-500">No recyclable items found.</p>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {customerRecyclables.map((item) => (
+            <div
+              key={item.recycle_id}
+              className="bg-white shadow-md rounded-xl p-4 border border-gray-200"
+            >
+              <h3 className="text-lg font-bold text-gray-800 mb-2">
+                Recycle ID: #{item.recycle_id}
+              </h3>
+              <ul className="text-sm text-gray-700 space-y-1">
+                <li><strong>Plastic:</strong> {item.plastic} kg</li>
+                <li><strong>E-Waste:</strong> {item.e_waste} kg</li>
+                <li><strong>Books:</strong> {item.books} kg</li>
+                <li><strong>Papers:</strong> {item.papers} kg</li>
+                <li><strong>Glass:</strong> {item.glass} kg</li>
+                <li><strong>Clothes:</strong> {item.clothes} kg</li>
+              </ul>
+              <div className="mt-4 text-sm text-gray-600">
+                <p><strong>Placed At:</strong> {formatDate(item.placed_at)}</p>
+                <p><strong>Address:</strong> {item.line1}, {item.city}, {item.state}, {item.country} - {item.postal_code}</p>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="no-data">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v3M4 7h16"/>
-            </svg>
-            <p>No recyclable items found</p>
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
+      )}
       </div>
     </div>
   );

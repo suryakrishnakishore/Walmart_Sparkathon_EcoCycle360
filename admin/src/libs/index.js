@@ -8,3 +8,21 @@ export const getDate = (dob) => {
     }
     return age;
 }
+
+
+export const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
+};
+
+export const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    }).format(amount || 0);
+};
+
+export const handleRecycle = (itemId) => {
+    console.log(`Processing recycling for item ${itemId}`);
+    alert(`Recycling process started for item ${itemId}`);
+};
