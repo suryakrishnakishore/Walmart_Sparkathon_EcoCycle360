@@ -6,6 +6,9 @@ CREATE TABLE users (
     hsh_password TEXT NOT NULL
 );
 
+ALTER TABLE users
+ADD COLUMN dob DATE;
+
 CREATE TABLE admins (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,

@@ -1,21 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { customers } from '../data';
 import '../styles/styles.css';
+import api from '../libs/apiCalls';
 
 export default function CustomerDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const customer = customers.find(c => c.id === parseInt(id));
+  const [ customer, setCustomer ] = useState({});
 
-  if (!customer) {
-    return (
-      <div className="container">
-        <div className="error-message">Customer not found</div>
-      </div>
-    );
+  async function getCustomer()  {
+    try {
+      const { status, data: result } = await api.get(`/user/${id}`);
+
+      if(status === 200) {
+        setCustomer(result?.user || {});
+      }
+    } catch (err) {
+      console.log(err);
+      setCustomer({});
+    }
   }
 
+  useEffect(() => {
+    getCustomer();
+  }, [])
   return (
     <div className="container">
       <button className="back-button" onClick={() => navigate(-1)}>
@@ -28,7 +37,7 @@ export default function CustomerDetail() {
       <div className="card">
         <div className="customer-photo-container">
           <img
-            src={customer.photo}
+            src={customer.gender === "Male" ? "https://randomuser.me/api/portraits/men/1.jpg" : "https://randomuser.me/api/portraits/women/3.jpg"}
             alt={customer.name}
             className="customer-photo"
           />
@@ -58,7 +67,7 @@ export default function CustomerDetail() {
               </svg>
               Rewarded Points
             </span>
-            <span className="detail-value highlight">{customer.points}</span>
+            <span className="detail-value highlight">{customer.points || "25"}</span>
           </div>
           
           <div className="detail-item">
@@ -68,7 +77,7 @@ export default function CustomerDetail() {
               </svg>
               Bonus
             </span>
-            <span className="detail-value">{customer.bonus}</span>
+            <span className="detail-value">{customer.bonus || "6"}</span>
           </div>
           
           <div className="detail-item">
@@ -78,7 +87,7 @@ export default function CustomerDetail() {
               </svg>
               Returned Products
             </span>
-            <span className="detail-value">{customer.returnedProducts}</span>
+            <span className="detail-value">{customer.returnedProducts || "2"}</span>
           </div>
         </div>
       </div>

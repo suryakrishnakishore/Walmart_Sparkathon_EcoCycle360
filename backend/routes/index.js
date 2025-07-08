@@ -1,9 +1,12 @@
 import express from "express";
 import authRoutes from "./authRoutes.js";
 import searchRoutes from "./searchRoutes.js";
+import userRoutes from "./userRoutes.js";
 
 const router = express.Router();
 
 router.use("/auth", authRoutes);
 router.use("/search", searchRoutes);
+router.use("/user", userRoutes);
+
 export default router;

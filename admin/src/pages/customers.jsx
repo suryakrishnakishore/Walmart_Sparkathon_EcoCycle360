@@ -1,16 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { customers } from '../data';
 import '../styles/styles.css';
+import api from '../libs/apiCalls.js';
+import { getDate } from '../libs/index.js';
+
 export default function Customers() {
   const [search, setSearch] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
 
-  // Filter customers by name, email, or phone
-  const filteredCustomers = customers.filter(customer =>
-    customer.name.toLowerCase().includes(search.toLowerCase()) ||
-    customer.email.toLowerCase().includes(search.toLowerCase()) ||
-    customer.phone.toLowerCase().includes(search.toLowerCase())
-  );
+  const getSuggestions = async () => {
+    try {
+      const { status, data: result } = await api.get(`/search/customers?query=${search}`);
+      if (status === 200) {
+        setSuggestions(result?.list || []);
+      }
+    } catch (err) {
+      console.error(err);
+      setSuggestions([]);
+    }
+  };
+
+  async function getAllUsers() {
+    try {
+      const {status, data: res} = await api.get("/user/all");
+      if(status === 200) {
+        setSuggestions(res?.users || []);
+      }
+    } catch (err) {
+      console.log(err);
+      setSuggestions([]);
+    }
+  }
+
+  useEffect(() => {
+    if(search.length < 2) {
+      getAllUsers();
+      return;
+    }
+
+    const timeoutId = setTimeout(getSuggestions, 300);
+
+    return () => clearTimeout(timeoutId);
+
+  }, [search]);
 
   return (
     <div className='main-content'>
@@ -30,16 +63,16 @@ export default function Customers() {
         <span>Gender</span>
       </div>
       <div>
-        {filteredCustomers.map(customer => (
-          <div className="customer-card" key={customer.id}>
-            <Link to={`/customers/${customer.id}`} className="customer-name">
+        {suggestions.map(customer => (
+          <Link to={`/customers/${customer.id}`} className="customer-card" key={customer.id}>
+            <div className="customer-name">
               {customer.name}
-            </Link>
+            </div>
             <div className="customer-email">{customer.email}</div>
-            <div className="customer-phone">{customer.phone}</div>
-            <div className="customer-age">{customer.age}</div>
+            <div className="customer-phone">{"90xxx712xx"}</div>
+            <div className="customer-age">{customer.dob ? getDate(customer.dob) : "-NAN-"}</div>
             <div className="customer-gender">{customer.gender}</div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
