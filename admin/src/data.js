@@ -1,123 +1,54 @@
+// src/data.js
 export const customers = [
   {
-    id: 1,
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '555-123-4567',
-    age: 32,
-    gender: 'Male',
-    points: 120,
-    bonus: 30,
-    returnedProducts: 2,
-    photo: 'https://randomuser.me/api/portraits/men/1.jpg'
+    id: "1",
+    name: "John Doe",
+    email: "john.doe@example.com",
+    phone: "+1 (555) 123-4567",
+    dob: "1985-04-23",
+    gender: "Male",
+    address: "123 Main St, New York, NY",
+    status: "active",
+    joinDate: "2020-06-15",
+    isPremium: true,
+    loyaltyPoints: 1250,
+    lastActive: "2023-05-15T14:30:00Z",
+    tier: "Gold"
   },
+  // Add more customers as needed...
+];
+
+export const orders = [
   {
-    id: 2,
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    phone: '555-987-6543',
-    age: 28,
-    gender: 'Female',
-    points: 200,
-    bonus: 50,
-    returnedProducts: 0,
-    photo: 'https://randomuser.me/api/portraits/women/2.jpg'
+    id: "ORD-1001",
+    customerId: "1",
+    date: "2023-05-10",
+    amount: 149.99,
+    status: "delivered",
+    items: [
+      { id: "PROD-201", name: "Wireless Headphones", quantity: 1, price: 99.99 },
+      { id: "PROD-202", name: "Phone Case", quantity: 2, price: 25.00 }
+    ],
+    paymentMethod: "Credit Card",
+    shippingAddress: "123 Main St, New York, NY"
   },
+  // Add more orders as needed...
+];
+
+export const recyclableItems = [
   {
-    id: 3,
-    name: 'Alice Johnson',
-    email: 'alice@example.com',
-    phone: '555-555-1212',
-    age: 41,
-    gender: 'Female',
-    points: 95,
-    bonus: 10,
-    returnedProducts: 1,
-    photo: 'https://randomuser.me/api/portraits/women/3.jpg'
+    id: "REC-7001",
+    customerId: "1",
+    orderId: "ORD-1001",
+    productId: "PROD-202",
+    name: "Phone Case (Eco-series)",
+    returnDate: "2023-05-18",
+    material: "Biodegradable silicone",
+    weight: "0.2 kg",
+    recycleMethod: "Specialized e-waste recycling",
+    status: "pending",
+    pointsAwarded: 50,
+    image: "https://m.media-amazon.com/images/I/61yFDeK2uGL._AC_SL1500_.jpg"
   },
-  {
-    id: 4,
-    name: 'Manijitya',
-    email: 'Manijitya30@gmail.com',
-    phone: '555-555-1212',
-    age: 25,
-    gender: 'Male',
-    points: 95,
-    bonus: 10,
-    returnedProducts: 1,
-    photo: 'https://randomuser.me/api/portraits/men/4.jpg'
-  },
-  {
-    id: 5,
-    name: 'Robert Brown',
-    email: 'robert.brown@example.com',
-    phone: '555-222-3333',
-    age: 36,
-    gender: 'Male',
-    points: 180,
-    bonus: 25,
-    returnedProducts: 3,
-    photo: 'https://randomuser.me/api/portraits/men/5.jpg'
-  },
-  {
-    id: 6,
-    name: 'Emily Clark',
-    email: 'emily.clark@example.com',
-    phone: '555-444-5555',
-    age: 29,
-    gender: 'Female',
-    points: 210,
-    bonus: 40,
-    returnedProducts: 0,
-    photo: 'https://randomuser.me/api/portraits/women/6.jpg'
-  },
-  {
-    id: 7,
-    name: 'Michael Lee',
-    email: 'michael.lee@example.com',
-    phone: '555-666-7777',
-    age: 38,
-    gender: 'Male',
-    points: 160,
-    bonus: 35,
-    returnedProducts: 2,
-    photo: 'https://randomuser.me/api/portraits/men/7.jpg'
-  },
-  {
-    id: 8,
-    name: 'Sophia Turner',
-    email: 'sophia.turner@example.com',
-    phone: '555-888-9999',
-    age: 27,
-    gender: 'Female',
-    points: 230,
-    bonus: 55,
-    returnedProducts: 1,
-    photo: 'https://randomuser.me/api/portraits/women/8.jpg'
-  },
-  {
-    id: 9,
-    name: 'David Wilson',
-    email: 'david.wilson@example.com',
-    phone: '555-101-2020',
-    age: 45,
-    gender: 'Male',
-    points: 110,
-    bonus: 20,
-    returnedProducts: 4,
-    photo: 'https://randomuser.me/api/portraits/men/9.jpg'
-  },
-  {
-    id: 10,
-    name: 'Olivia Martinez',
-    email: 'olivia.martinez@example.com',
-    phone: '555-303-4040',
-    age: 31,
-    gender: 'Female',
-    points: 175,
-    bonus: 28,
-    returnedProducts: 0,
-    returnedProducts: 0,
-    photo: 'https://randomuser.me/api/portraits/women/10.jpg'
-  }
+  // Add more recyclable items as needed...
 ];
