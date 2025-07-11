@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import SignIn from './pages/auth/sign-in';
-import SignUp from './pages/auth/sign-up';
 import useStore from './store/index';
 import { setAuthToken } from './libs/apiCalls.js';
 import { Toaster } from "sonner";
@@ -12,7 +11,7 @@ import Orders from './pages/orders.jsx';
 import RecycleOrders from './pages/recycle-orders.jsx';
 import InMall from './pages/in-mall.jsx';
 import CustomerDetails from './pages/CustomerDetails.jsx';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/dashboard.jsx';
 const RootLayout = () => {
 
   const { user } = useStore((state) => state);
@@ -46,13 +45,13 @@ function App() {
         <Routes>
           <Route element={<RootLayout/>}>
             <Route path='/' element={<Navigate to={"/home"} />}></Route>
-            <Route path='/home' element={<Home />} />
+            <Route path='/home' element={<Dashboard />} />
             <Route path='/customers' element={<Customers />}></Route>
             <Route path='/orders' element={<Orders />}></Route>
             <Route path='/recycle-orders' element={<RecycleOrders />}></Route>
             <Route path='/in-mall' element={<InMall />}></Route>
             <Route path='/customers/:id' element={<CustomerDetails />}></Route>
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Navigate to={"/home"} />} />
           </Route> 
           <Route path='/sign-in' element={<SignIn/>}></Route>
         </Routes>

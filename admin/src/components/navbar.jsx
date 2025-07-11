@@ -20,7 +20,7 @@ function Navbar({ navOpen, setNavOpen }) {
               onMouseEnter={() => setNavOpen(true)}
               onMouseLeave={() => setNavOpen(false)}
     >
-      <div className="flex items-center mb-10">
+      <Link to={"/"} className="flex items-center mb-10">
         <FaRecycle className={`text-3xl text-white ml-2 min-w-[32px] group-hover:ml-0`}
           style={{ animation: "spin 2s linear infinite" }}
         />
@@ -28,7 +28,7 @@ function Navbar({ navOpen, setNavOpen }) {
           opacity-0 group-hover:opacity-100 group-hover:ml-2">
           Eco<strong className="text-green-400 font-extrabold font-stretch-semi-expanded text-shadow-lg animate-pulse">Cycle</strong>360
         </span>
-      </div>
+      </Link>
 
       <nav className="flex flex-col gap-4 flex-1">
         <Link to={"/dashboard"} className="flex items-center text-white hover:bg-green-600 rounded px-3 py-2 transition">
