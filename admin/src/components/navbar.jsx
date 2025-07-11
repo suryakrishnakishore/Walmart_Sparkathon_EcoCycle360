@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaRecycle, FaBoxOpen, FaUsers, FaClipboardList, FaUserShield } from 'react-icons/fa'
+import { FaRecycle, FaBoxOpen, FaUsers, FaClipboardList, FaUserShield,FaHome } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import useStore from '../store'
 import { useState } from 'react';
@@ -31,6 +31,13 @@ function Navbar({ navOpen, setNavOpen }) {
       </div>
 
       <nav className="flex flex-col gap-4 flex-1">
+        <Link to={"/dashboard"} className="flex items-center text-white hover:bg-green-600 rounded px-3 py-2 transition">
+  <FaHome className="text-2xl mr-1 min-w-[24px]" />
+  <span className="whitespace-nowrap overflow-hidden transition-all duration-300
+    opacity-0 group-hover:opacity-100 group-hover:ml-2">
+    Dashboard
+  </span>
+</Link>
         <Link to={"/orders"} className="flex items-center text-white hover:bg-green-600 rounded px-3 py-2 transition">
           <FaBoxOpen className="text-2xl mr-1 min-w-[24px]" />
           <span className="whitespace-nowrap overflow-hidden transition-all duration-300

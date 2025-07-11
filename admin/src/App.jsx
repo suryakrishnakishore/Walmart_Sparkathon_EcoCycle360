@@ -12,6 +12,7 @@ import Orders from './pages/orders.jsx';
 import RecycleOrders from './pages/recycle-orders.jsx';
 import InMall from './pages/in-mall.jsx';
 import CustomerDetails from './pages/CustomerDetails.jsx';
+import Dashboard from './pages/Dashboard';
 const RootLayout = () => {
 
   const { user } = useStore((state) => state);
@@ -51,6 +52,7 @@ function App() {
             <Route path='/recycle-orders' element={<RecycleOrders />}></Route>
             <Route path='/in-mall' element={<InMall />}></Route>
             <Route path='/customers/:id' element={<CustomerDetails />}></Route>
+            <Route path="/dashboard" element={<Dashboard />} />
           </Route> 
           <Route path='/sign-in' element={<SignIn/>}></Route>
         </Routes>
