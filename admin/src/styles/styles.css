@@ -93,10 +93,6 @@ h2 {
   transition: color 0.2s;
 }
 
-.customer-name:hover {
-  color: #1e40af;
-  text-decoration: underline;
-}
 
 /* Premium badge inside name */
 .badge-premium {
