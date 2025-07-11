@@ -92,9 +92,14 @@ export default function CustomerDetail() {
         Back to Customers
       </button>
 
+<<<<<<< HEAD
       {/* Profile */}
       <div className="customer-detail-profile-card">
         <div className="customer-detail-photo-container">
+=======
+      <div className="profile-card">
+        <div className="customer-photo-container">
+>>>>>>> e8b90a3 (Small changes)
           <img
             src={
               customer.gender === 'Male'
@@ -104,6 +109,7 @@ export default function CustomerDetail() {
             alt={customer.name}
             className="customer-detail-photo"
           />
+<<<<<<< HEAD
           {customer.id & 1 ? (
             <div className="customer-detail-premium-badge">Premium</div>
           ) : null}
@@ -127,6 +133,14 @@ export default function CustomerDetail() {
             <div className="customer-detail-item">
               <span className="customer-detail-label">Gender:</span>
               <span className="customer-detail-value">{customer.gender || 'Not specified'}</span>
+=======
+          {customer.id%2 == 1 && (
+            <div className="premium-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="gold" stroke="gold">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/>
+              </svg>
+              Premium
+>>>>>>> e8b90a3 (Small changes)
             </div>
             <div className="customer-detail-item">
               <span className="customer-detail-label">Age:</span>
