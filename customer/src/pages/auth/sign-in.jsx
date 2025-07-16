@@ -4,6 +4,7 @@ import api from '../../libs/apiCalls';
 import { BiLoader } from 'react-icons/bi';
 import { toast } from "sonner";
 import useStore from '../../store';
+import Navbar from '../../components/navbar';
 
 function SignIn() {
     const [form, setForm] = useState({
@@ -54,6 +55,7 @@ function SignIn() {
 
     return (
         <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-300 to-green-400'>
+            <Navbar />
             <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Sign In</h2>
                 <form onSubmit={handleSubmit} className="space-y-5">
