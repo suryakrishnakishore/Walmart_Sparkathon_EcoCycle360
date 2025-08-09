@@ -14,24 +14,11 @@ import Leaderboard from './pages/leaderboard.jsx';
 
 const RootLayout = () => {
 
-  // const { user } = useStore((state) => state);
-  // console.log(user);
-  // setAuthToken(user?.token || "");
+  const { user } = useStore((state) => state);
+  console.log(user);
+  setAuthToken(user?.token || "");
 
-  // return (user ? (
-  //   <>
-  //     { <Navbar /> }
-  //     <div className='min-h-[cal(h-screen - 100px)]'>
-  //       <Outlet />
-  //     </div>
-  //   </>
-    
-  // ) : (
-  //   <Navigate to="/sign-in" replace={true} />
-  // ))
-
-
-  return (
+  return (user ? (
     <>
       <Navbar />
       <div className="flex flex-row min-h-[calc(100vh_-_100px)] ">
@@ -41,9 +28,11 @@ const RootLayout = () => {
         </div>
       </div>
     </>
-  );
+    
+  ) : (
+    <Navigate to="/sign-in" replace={true} />
+  ))
 
-  
 
 
 }

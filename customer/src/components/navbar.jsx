@@ -3,6 +3,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { FaUserCircle, FaShoppingCart, FaCoins } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import useStore from "../store";
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
@@ -13,6 +14,13 @@ const Navbar = () => {
   const handleChange = () => {
     setMenu(!menu);
   };
+
+  const { user, signOut } = useStore((state) => state);
+
+  const handleLogout = () => {
+    localStorage.removeItem("ecouser");
+    signOut();
+  }
 
   return (
     <div className="fixed top-0 left-0 w-full bg-gradient-to-b from-[#eafdef] to-white shadow-md z-[1000]">
@@ -39,7 +47,7 @@ const Navbar = () => {
           >
            
             <FaUserCircle size={24} />
-            <span className="mt-1">Logout</span>
+            <span className="mt-1" onClick={handleLogout}>Logout</span>
           </Link>
 
           {/* Cart */}
