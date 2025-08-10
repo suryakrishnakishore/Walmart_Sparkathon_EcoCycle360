@@ -1,6 +1,6 @@
 import { db } from "../libs/database.js";
 
-db.connect();
+// db.connect();
 
 export const getOrders = async (req, res) => {
 

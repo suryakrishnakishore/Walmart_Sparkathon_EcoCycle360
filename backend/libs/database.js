@@ -41,6 +41,7 @@ export const db = new Pool({
     database: process.env.PG_DATABASE,
     password: process.env.PG_PASSWORD,
     port: process.env.PG_PORT,
+    max: 5,
   ssl: {
     ca: fs.readFileSync(path.join(__dirname, 'ca.pem')).toString(),
     rejectUnauthorized: true

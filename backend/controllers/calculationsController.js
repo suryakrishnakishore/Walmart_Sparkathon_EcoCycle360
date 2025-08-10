@@ -1,7 +1,7 @@
 import { db } from "../libs/database.js";
 import axios from "axios";
 
-db.connect();
+// db.connect();
 
 export async function calculateCO2(req, res) {
     try {

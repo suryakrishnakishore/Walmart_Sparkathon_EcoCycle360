@@ -2,7 +2,7 @@ import { db } from "../libs/database.js";
 import { comparePassword, createJWT, hashPassword } from "../libs/index.js";
 
 
-db.connect();
+// db.connect();
 
 export const signinUser = async (req, res) => {
     try {

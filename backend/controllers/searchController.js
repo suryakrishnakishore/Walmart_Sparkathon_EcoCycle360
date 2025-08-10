@@ -1,6 +1,6 @@
 import { db } from "../libs/database.js";
 
-db.connect();
+// db.connect();
 
 export const getByMail = async (req, res) => {
     const { query } = req.query;
