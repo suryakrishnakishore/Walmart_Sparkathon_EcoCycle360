@@ -117,7 +117,35 @@ export async function calculateCO2(req, res) {
             prediction_datas.clothes = Cresponse.data.prediction[0];
         }
 
+        const verify = await db.query(`SELECT EXISTS(SELECT 1 FROM customer_ecocycle WHERE id = $1)`, [
+            features.email
+        ]);
 
+        if(verify.rows[0].exists) {
+            const responce = await db.query('UPDATE customer_ecocycle SET plastic = plastic + $1, e_waste = e_waste + $2, books = books + $3, papers = papers + $4, glass = glass + $5, clothes = clothes + $6, co2_saved = co2_saved + $7 WHERE id = $8', [
+                prediction_datas.plastic,
+                prediction_datas.electronic,
+                prediction_datas.books,
+                prediction_datas.papers,
+                prediction_datas.glass,
+                prediction_datas.clothes,
+                prediction_datas.total_saved,
+                features.email
+            ]);
+        }
+        else {
+            const responce = await db.query('INSERT INTO customer_ecocycle (id, plastic, e_waste, books, papers, glass, clothes, co2_saved) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [
+                features.email,
+                prediction_datas.plastic,
+                prediction_datas.electronic,
+                prediction_datas.books,
+                prediction_datas.papers,
+                prediction_datas.glass,
+                prediction_datas.clothes,
+                prediction_datas.total_saved,
+            ]);
+
+        }
         res.status(201).json({
             status: "success",
             message: "Successfully predicted the amount of CO2 saved.",

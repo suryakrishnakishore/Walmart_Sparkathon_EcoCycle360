@@ -20,7 +20,7 @@ function InMall() {
 
     const getSuggestions = async () => {
         try {
-            const { status, data: result } = await api.get(`/search/customer-mail?query=${form.email}`);
+            const { status, data: result } = await api.get(`/search/customer-id?query=${form.email}`);
             if (status === 200) {
                 setSuggestions(result?.list || []);
             }
@@ -58,7 +58,7 @@ function InMall() {
     };
 
     useEffect(() => {
-        if (form.email.length < 2) {
+        if (form.email.length === 0) {
             setSuggestions([]);
             return;
         }
@@ -75,10 +75,10 @@ function InMall() {
                     <form onSubmit={handleSubmit} className="space-y-8">
                         <div className="flex flex-col gap-6">
                             <div className="relative">
-                                <label htmlFor="email" className="block font-medium text-gray-700 mb-2 text-lg">Email Address</label>
+                                <label htmlFor="email" className="block font-medium text-gray-700 mb-2 text-lg">Customer Id</label>
                                 <div className="relative">
                                     <input
-                                        type="email"
+                                        type="text"
                                         name="email"
                                         id="email"
                                         className="w-full px-5 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 text-lg transition"
@@ -94,13 +94,13 @@ function InMall() {
                                                     key={ind}
                                                     className="px-4 py-3 hover:bg-blue-50 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0"
                                                     onClick={() => {
-                                                        setForm((prev) => ({ ...prev, email: suggestion.email }));
+                                                        setForm((prev) => ({ ...prev, email: suggestion.id }));
                                                         setSuggestions([]);
                                                     }}
                                                 >
                                                     <div className="flex flex-col">
                                                         <span className="font-semibold text-blue-800">{suggestion.name}</span>
-                                                        <span className="text-gray-600 text-sm">{suggestion.email}</span>
+                                                        <span className="text-gray-600 text-sm">{suggestion.id}</span>
                                                     </div>
                                                 </li>
                                             ))}
