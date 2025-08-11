@@ -12,7 +12,7 @@ export const getRecycles = async (req, res) => {
         res.status(200).json({
             status: "success",
             message: "Retreived All users successfully.",
-            users: response.rows
+            recyclables: response.rows
         });
     } catch (error) {
         console.log(error);
